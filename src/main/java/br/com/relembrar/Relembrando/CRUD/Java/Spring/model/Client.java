@@ -1,0 +1,49 @@
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.model;
+
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.Instant;
+
+@Entity(name = "tb_clients")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class Client {
+
+    public Client(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @JsonFormat(
+            pattern = "dd/MM/yyyy HH:mm:ss",
+            timezone = "America/Sao_Paulo"
+    )
+    @CreationTimestamp
+    private Instant createdAt;
+
+    public ClientDTO toDTO() {
+        return new ClientDTO(name, email, password);
+    }
+
+}

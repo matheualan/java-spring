@@ -1,0 +1,1 @@
+ALTER TABLE tb_products RENAME TO tb_clients;
