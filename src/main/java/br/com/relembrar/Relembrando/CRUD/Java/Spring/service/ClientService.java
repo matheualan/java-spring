@@ -1,6 +1,6 @@
 package br.com.relembrar.Relembrando.CRUD.Java.Spring.service;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientDTO;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientPostDTO;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.repository.ClientRepository;
 import jakarta.transaction.Transactional;
@@ -21,10 +21,10 @@ public class ClientService {
         return clientRepository.findAll();
     }
 
-    public List<ClientDTO> findAllRecords() {
+    public List<ClientPostDTO> findAllRecords() {
         return findAll()
                 .stream()
-                .map(p -> new ClientDTO(
+                .map(p -> new ClientPostDTO(
                         p.getName(),
                         p.getEmail(),
                         p.getPassword()
@@ -32,7 +32,7 @@ public class ClientService {
                 .toList();
     }
 
-    public List<ClientDTO> findAllDto() {
+    public List<ClientPostDTO> findAllDto() {
         return findAll()
                 .stream()
                 .map(Client::toDTO)
@@ -40,14 +40,14 @@ public class ClientService {
     }
 
     @Transactional()
-    public ClientDTO saveClient(ClientDTO clientDto) {
+    public ClientPostDTO saveClient(ClientPostDTO clientPostDto) {
         Client client = new Client(
-                clientDto.name(),
-                clientDto.email(),
-                clientDto.password()
+                clientPostDto.name(),
+                clientPostDto.email(),
+                clientPostDto.password()
         );
         clientRepository.save(client);
-        return clientDto;
+        return clientPostDto;
     }
 
 }
