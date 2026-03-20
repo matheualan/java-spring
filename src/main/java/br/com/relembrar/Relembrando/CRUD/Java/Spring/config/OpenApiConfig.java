@@ -12,9 +12,9 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Relembrando CRUD API")
+                        .title("Relembrando API Rest Spring Boot")
                         .version("1.0")
-                        .description("API desenvolvida para reforçar conceitos de Spring Boot + Flyway + JPA"));
+                        .description("API desenvolvida para reforçar conceitos do Spring Boot"));
     }
 
 }
