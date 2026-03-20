@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_remember
+    username: ${USERNAME_POSTGRES}
+    password: ${PASSWORD_POSTGRES}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+#  flyway:
+#    enabled: true
+#    locations: classpath:db/migration
