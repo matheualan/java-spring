@@ -1,6 +1,6 @@
 package br.com.relembrar.Relembrando.CRUD.Java.Spring.model;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientDTO;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientPostDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,8 +42,8 @@ public class Client {
     @CreationTimestamp
     private Instant createdAt;
 
-    public ClientDTO toDTO() {
-        return new ClientDTO(name, email, password);
+    public ClientPostDTO toDTO() {
+        return new ClientPostDTO(name, email, password);
     }
 
 }
