@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record ClientPostDTO(
+public record ClientRequest(
         @NotBlank(message = "Nome não pode ser vazio.")
         @Size(min = 3, message = "Nome deve ter no mínimo 3 caracteres.")
         String name,

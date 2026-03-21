@@ -6,7 +6,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/db_remember
     username: ${USERNAME_POSTGRES}
     password: ${PASSWORD_POSTGRES}
-
   jpa:
     hibernate:
       ddl-auto: validate
