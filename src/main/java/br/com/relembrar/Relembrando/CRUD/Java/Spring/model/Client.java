@@ -4,9 +4,7 @@ import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -14,7 +12,9 @@ import java.time.Instant;
 @Entity(name = "tb_clients")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "password")
 public class Client {
 
     public Client(String name, String email, String password) {

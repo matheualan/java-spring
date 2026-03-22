@@ -65,4 +65,10 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PutMapping(path = "/")
+    public ResponseEntity<ClientResponse> updatedClientById(@RequestParam Long id,
+                                                            @RequestBody @Valid ClientRequest clientDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(clientService.updatedClientById(id, clientDTO));
+    }
+
 }
