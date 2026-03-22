@@ -1,7 +1,7 @@
 package br.com.relembrar.Relembrando.CRUD.Java.Spring.controller;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.service.ClientService;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -28,7 +28,7 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.saveClient(clientRequest));
     }
 
-    @PostMapping(path = "/all")
+    @PostMapping(path = "/multiple")
     public ResponseEntity<List<ClientRequest>> saveMultipleClients(@RequestBody @Valid List<ClientRequest> listClients) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.saveMultipleClients(listClients));
     }
@@ -38,14 +38,14 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body(clientService.findClientById(id));
     }
 
+    @GetMapping(path = "/")
+    public ResponseEntity<List<Client>> findAll() {
+        return ResponseEntity.ok().body(clientService.findAll());
+    }
+
     @GetMapping(path = "/listResponse")
     public ResponseEntity<List<ClientResponse>> listClientResponse() {
         return ResponseEntity.status(HttpStatus.OK).body(clientService.listClientResponse());
-    }
-
-    @GetMapping(path = "/list")
-    public ResponseEntity<List<Client>> findAll() {
-        return ResponseEntity.ok().body(clientService.findAll());
     }
 
     @GetMapping(path = "/list-dto")
@@ -59,5 +59,10 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.OK).body(clientService.findAllRecords());
     }
 
+    @DeleteMapping(path = "/")
+    public ResponseEntity<Void> deleteClientById(@RequestParam Long id) {
+        clientService.deleteClientById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }

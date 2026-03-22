@@ -1,4 +1,4 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.dto;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package br.com.relembrar.Relembrando.CRUD.Java.Spring.model;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

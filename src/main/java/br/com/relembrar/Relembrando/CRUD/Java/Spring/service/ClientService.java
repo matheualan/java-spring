@@ -1,7 +1,7 @@
 package br.com.relembrar.Relembrando.CRUD.Java.Spring.service;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.exceptions.ClientNotFoundException;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.repository.ClientRepository;
@@ -85,6 +85,10 @@ public class ClientService {
                 .stream()
                 .map(Client::toResponseDTO)
                 .toList();
+    }
+
+    public void deleteClientById(Long id) {
+        clientRepository.deleteById(id);
     }
 
 }
