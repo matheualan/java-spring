@@ -6,6 +6,7 @@ import br.com.relembrar.Relembrando.CRUD.Java.Spring.exceptions.ClientNotFoundEx
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
 import br.com.relembrar.Relembrando.CRUD.Java.Spring.repository.ClientRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,18 +17,26 @@ import java.util.Optional;
 public class ClientService {
 
     private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public ClientService(ClientRepository clientRepository) {
+    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
         this.clientRepository = clientRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional()
     public ClientRequest saveClient(ClientRequest clientRequest) {
+        String encrypted = "";
+        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
+            encrypted = passwordEncoder.encode(clientRequest.password());
+        }
+        
         Client client = new Client(
                 clientRequest.name(),
                 clientRequest.email(),
-                clientRequest.password()
+                encrypted
         );
+        
         clientRepository.save(client);
         return clientRequest;
     }
@@ -87,8 +96,28 @@ public class ClientService {
                 .toList();
     }
 
+    @Transactional
     public void deleteClientById(Long id) {
         clientRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ClientResponse updatedClientById(Long id, ClientRequest clientDTO) {
+//        ClientResponse clientById = findClientById(id).get();
+
+        Client client = getClientById(id);
+
+        client.setName(clientDTO.name());
+        client.setEmail(clientDTO.email());
+
+        if (clientDTO.password() != null && !clientDTO.password().isBlank()) {
+            String encrypted = passwordEncoder.encode(clientDTO.password());
+            client.setPassword(encrypted);
+        }
+
+        clientRepository.save(client);
+
+        return new ClientResponse(client.getName(), client.getEmail());
     }
 
 }
