@@ -14,7 +14,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create #apenas para H2 em memoria, banco real usa validate
     properties:
       hibernate:
         jdbc:

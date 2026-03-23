@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Matheus Silva",
+    "email": "matheus.silva@example.com",
+    "password": "senha123"
+  },
+  {
+    "name": "Ana Costa",
+    "email": "ana.costa@example.com",
+    "password": "senha456"
+  },
+  {
+    "name": "Carlos Souza",
+    "email": "carlos.souza@example.com",
+    "password": "senha789"
+  },
+  {
+    "name": "Juliana Pereira",
+    "email": "juliana.pereira@example.com",
+    "password": "senha321"
+  },
+  {
+    "name": "Rafael Almeida",
+    "email": "rafael.almeida@example.com",
+    "password": "senha654"
+  },
+  {
+    "name": "Fernanda Lima",
+    "email": "fernanda.lima@example.com",
+    "password": "senha987"
+  },
+  {
+    "name": "Bruno Martins",
+    "email": "bruno.martins@example.com",
+    "password": "senha147"
+  },
+  {
+    "name": "Camila Rocha",
+    "email": "camila.rocha@example.com",
+    "password": "senha258"
+  },
+  {
+    "name": "Lucas Fernandes",
+    "email": "lucas.fernandes@example.com",
+    "password": "senha369"
+  },
+  {
+    "name": "Patricia Gomes",
+    "email": "patricia.gomes@example.com",
+    "password": "senha159"
+  }
+]

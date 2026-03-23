@@ -24,12 +24,12 @@ public class ClientController {
     }
 
     @PostMapping(path = "/")
-    public ResponseEntity<ClientRequest> saveProduct(@RequestBody @Valid ClientRequest clientRequest) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.saveClient(clientRequest));
+    public ResponseEntity<ClientResponse> saveProduct(@RequestBody @Valid ClientRequest clientRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.createClient(clientRequest));
     }
 
     @PostMapping(path = "/multiple")
-    public ResponseEntity<List<ClientRequest>> saveMultipleClients(@RequestBody @Valid List<ClientRequest> listClients) {
+    public ResponseEntity<List<ClientResponse>> saveMultipleClients(@RequestBody @Valid List<ClientRequest> listClients) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clientService.saveMultipleClients(listClients));
     }
 
