@@ -25,30 +25,48 @@ public class ClientService {
     }
 
     @Transactional()
-    public ClientRequest saveClient(ClientRequest clientRequest) {
-        String encrypted = "";
-        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
-            encrypted = passwordEncoder.encode(clientRequest.password());
+    public ClientResponse createClient(ClientRequest clientRequest) {
+        if (clientRequest.password() == null || clientRequest.password().isBlank()) {
+            throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
         }
-        
+
+//        String encrypted = "";
+//        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
+//            encrypted = passwordEncoder.encode(clientRequest.password());
+//        }
+
+        String passwordEncrypted = passwordEncoder.encode(clientRequest.password());
+
         Client client = new Client(
                 clientRequest.name(),
                 clientRequest.email(),
-                encrypted
+                passwordEncrypted
         );
         
         clientRepository.save(client);
-        return clientRequest;
+        return new ClientResponse(client.getName(), client.getEmail());
     }
 
     @Transactional
-    public List<ClientRequest> saveMultipleClients(List<ClientRequest> listClientsDTO) {
+    public List<ClientResponse> saveMultipleClients(List<ClientRequest> listClientsDTO) {
         List<Client> clients = new ArrayList<>();
+        List<ClientResponse> listResponse = new ArrayList<>();
+
         for (ClientRequest clientDto : listClientsDTO) {
-            clients.add(new Client(clientDto.name(), clientDto.email(), clientDto.password()));
+            if (clientDto.password() == null || clientDto.password().isBlank()) {
+                throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
+            }
+
+            String passwordEncoder = this.passwordEncoder.encode(clientDto.password());
+            clients.add(new Client(clientDto.name(), clientDto.email(), passwordEncoder));
         }
         clientRepository.saveAll(clients);
-        return listClientsDTO;
+
+        for (Client client : clients) {
+            listResponse.add(new ClientResponse(client.getName(), client.getEmail()));
+        }
+
+        return listResponse;
     }
 
     public List<Client> findAll() {
@@ -104,6 +122,10 @@ public class ClientService {
     @Transactional
     public ClientResponse updatedClientById(Long id, ClientRequest clientDTO) {
 //        ClientResponse clientById = findClientById(id).get();
+//        String encrypted = "";
+//        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
+//            encrypted = passwordEncoder.encode(clientRequest.password());
+//        }
 
         Client client = getClientById(id);
 
