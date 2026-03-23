@@ -1,8 +1,6 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 public record ClientRequest(
         @NotBlank(message = "Nome não pode ser vazio.")
@@ -14,6 +12,6 @@ public record ClientRequest(
         String email,
 
         @NotBlank(message = "Senha não pode ser vazia.")
-        @Size(min = 8, max = 255, message = "Senha deve ter entre 8 e 20 caracteres.")
+        @Size(min = 8, max = 72, message = "Senha deve ter entre 8 e 72 caracteres.")
         String password) {
 }

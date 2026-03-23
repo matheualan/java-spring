@@ -1,10 +1,10 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.service;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.service;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.exceptions.ClientNotFoundException;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.repository.ClientRepository;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.exceptions.ClientNotFoundException;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.model.Client;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.repository.ClientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,25 +26,17 @@ public class ClientService {
 
     @Transactional()
     public ClientResponse createClient(ClientRequest clientRequest) {
-        if (clientRequest.password() == null || clientRequest.password().isBlank()) {
-            throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
-        }
-
-//        String encrypted = "";
-//        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
-//            encrypted = passwordEncoder.encode(clientRequest.password());
+//        if (clientRequest.password() == null || clientRequest.password().isBlank()) {
+//            throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
 //        }
-
-        String passwordEncrypted = passwordEncoder.encode(clientRequest.password());
-
         Client client = new Client(
                 clientRequest.name(),
                 clientRequest.email(),
-                passwordEncrypted
+                passwordEncoder.encode(clientRequest.password())
         );
-        
-        clientRepository.save(client);
-        return new ClientResponse(client.getName(), client.getEmail());
+        Client savedClient = clientRepository.save(client);
+
+        return new ClientResponse(savedClient.getId(), savedClient.getName(), savedClient.getEmail());
     }
 
     @Transactional
@@ -63,7 +55,7 @@ public class ClientService {
         clientRepository.saveAll(clients);
 
         for (Client client : clients) {
-            listResponse.add(new ClientResponse(client.getName(), client.getEmail()));
+            listResponse.add(new ClientResponse(client.getId(), client.getName(), client.getEmail()));
         }
 
         return listResponse;
@@ -78,7 +70,8 @@ public class ClientService {
 
         Client client = clientRepository.findById(id).get();
 
-        return Optional.of(new ClientResponse(client.getName(),
+        return Optional.of(new ClientResponse(client.getId(),
+                client.getName(),
                 client.getEmail()));
     }
 
@@ -88,7 +81,7 @@ public class ClientService {
                 .orElseThrow(() -> new ClientNotFoundException("Cliente não encontrado com o ID: " + id));
     }
 
-//    So para saber que existe essa forma
+    //    So para saber que existe essa forma
     public List<ClientRequest> findAllRecords() {
         return findAll()
                 .stream()
@@ -139,7 +132,7 @@ public class ClientService {
 
         clientRepository.save(client);
 
-        return new ClientResponse(client.getName(), client.getEmail());
+        return new ClientResponse(client.getId(), client.getName(), client.getEmail());
     }
 
 }
