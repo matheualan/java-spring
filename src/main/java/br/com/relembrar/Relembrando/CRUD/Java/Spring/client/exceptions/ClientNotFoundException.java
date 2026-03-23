@@ -1,4 +1,4 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.exceptions;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

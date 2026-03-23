@@ -1,7 +1,7 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.model;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.model;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -48,7 +48,7 @@ public class Client {
     }
 
     public ClientResponse toResponseDTO() {
-        return new ClientResponse(name, email);
+        return new ClientResponse(id, name, email);
     }
 
 }

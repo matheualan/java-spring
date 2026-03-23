@@ -1,9 +1,9 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.controller;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.controller;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientRequest;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.dto.client.ClientResponse;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.service.ClientService;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientRequest;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.dto.client.ClientResponse;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.model.Client;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.service.ClientService;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

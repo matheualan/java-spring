@@ -1,6 +1,6 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.repository;
+package br.com.relembrar.Relembrando.CRUD.Java.Spring.client.repository;
 
-import br.com.relembrar.Relembrando.CRUD.Java.Spring.model.Client;
+import br.com.relembrar.Relembrando.CRUD.Java.Spring.client.model.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
