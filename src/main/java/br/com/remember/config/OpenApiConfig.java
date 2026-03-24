@@ -1,4 +1,4 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.config;
+package br.com.remember.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

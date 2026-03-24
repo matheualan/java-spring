@@ -1,4 +1,4 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring.config.security;
+package br.com.remember.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +18,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers(HttpMethod.GET);
-                    auth.anyRequest().permitAll();
-                });
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return httpSecurity.build();
     }
