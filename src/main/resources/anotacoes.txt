@@ -1,0 +1,2 @@
+Excecoes identificadas para criar handler exceptions:
+DataIntegrityViolationException = Validacao do DB quando tenta criar email ja existente

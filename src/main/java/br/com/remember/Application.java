@@ -1,4 +1,4 @@
-package br.com.relembrar.Relembrando.CRUD.Java.Spring;
+package br.com.remember;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>br.com.relembrar</groupId>
-    <artifactId>Relembrando-CRUD-Java-Spring</artifactId>
+    <artifactId>remember-java-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name/>
