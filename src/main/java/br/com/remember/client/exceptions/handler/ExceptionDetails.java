@@ -18,6 +18,7 @@ public class ExceptionDetails {
     protected int status;
     protected String detail;
     protected String developerMessage;
+    protected String path;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss", timezone = "America/Sao_Paulo")
     protected Instant timestamp;
 

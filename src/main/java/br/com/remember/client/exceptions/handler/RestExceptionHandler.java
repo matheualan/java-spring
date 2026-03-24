@@ -2,17 +2,20 @@ package br.com.remember.client.exceptions.handler;
 
 import br.com.remember.client.exceptions.ClientNotFoundException;
 import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
 
 @RestControllerAdvice
-public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-//public class RestExceptionHandler {
+//public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler {
 
 //    @PostConstruct
 //    public void init() {
@@ -20,14 +23,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 //    }
 
     @ExceptionHandler(ClientNotFoundException.class)
-    public ResponseEntity<ExceptionDetails> handleClientNotFoundException(ClientNotFoundException exception) {
-        System.out.println("ENTROU NO HANDLER");
+    public ResponseEntity<ExceptionDetails> handleClientNotFoundException(
+            ClientNotFoundException exception,
+            HttpServletRequest request) {
+
+        String path = request.getRequestURI();
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ExceptionDetails.builder()
                         .title("Cliente não encontrado, verifique os dados.")
                         .status(HttpStatus.NOT_FOUND.value())
                         .detail(exception.getMessage())
-                        .developerMessage(exception.getClass().toString())
+                        .developerMessage(exception.getClass().getName())
+                        .path(path)
                         .timestamp(Instant.now())
                         .build()
         );
@@ -35,7 +43,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ExceptionDetails> handleIllegalArgument(
-            IllegalArgumentException exception) {
+            IllegalArgumentException exception,
+            WebRequest webRequest) {
+
+        ServletWebRequest servletWebRequest = (ServletWebRequest) webRequest;
+        String path = servletWebRequest.getRequest().getRequestURI();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                 ExceptionDetails.builder()
@@ -43,6 +55,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .status(HttpStatus.BAD_REQUEST.value())
                         .detail(exception.getMessage())
                         .developerMessage(exception.getClass().getName())
+                        .path(path)
                         .timestamp(Instant.now())
                         .build()
         );
