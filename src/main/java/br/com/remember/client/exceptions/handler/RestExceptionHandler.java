@@ -11,8 +11,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.Instant;
 
 @RestControllerAdvice
-//public class RestExceptionHandler extends ResponseEntityExceptionHandler {
-public class RestExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+//public class RestExceptionHandler {
+
+//    @PostConstruct
+//    public void init() {
+//        System.out.println("RestExceptionHandler carregado");
+//    }
 
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<ExceptionDetails> handleClientNotFoundException(ClientNotFoundException exception) {
@@ -46,11 +51,6 @@ public class RestExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneric(Exception ex) {
         return ResponseEntity.status(500).body("Peguei a exceção: " + ex.getClass().getName());
-    }
-
-    @PostConstruct
-    public void init() {
-        System.out.println("RestExceptionHandler carregado");
     }
 
 }
