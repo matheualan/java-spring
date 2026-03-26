@@ -40,7 +40,7 @@ public class ClientController {
     }
 
     @GetMapping(path = "/clientById")
-    public ResponseEntity<Optional<ClientResponse>> findClientById(@RequestParam Long id) {
+    public ResponseEntity<ClientResponse> findClientById(@RequestParam Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(clientService.findClientById(id));
     }
 

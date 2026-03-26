@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -61,9 +62,28 @@ public class RestExceptionHandler {
         );
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionDetails> handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException exception,
+            HttpServletRequest request) {
+
+        String path = request.getRequestURI();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ExceptionDetails.builder()
+                        .title("Argumento inválido, verifique a documentação.")
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .detail(exception.getMessage())
+                        .developerMessage(exception.getClass().getName())
+                        .path(path)
+                        .timestamp(Instant.now())
+                        .build()
+        );
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneric(Exception ex) {
-        return ResponseEntity.status(500).body("Peguei a exceção: " + ex.getClass().getName());
+        return ResponseEntity.status(500).body("Ops! Uma exceção foi lançada: " + ex.getClass().getName());
     }
 
 }

@@ -34,6 +34,7 @@ public class ClientService {
                 clientRequest.email(),
                 passwordEncoder.encode(clientRequest.password())
         );
+
         Client savedClient = clientRepository.save(client);
 
         return new ClientResponse(savedClient.getId(),
@@ -71,21 +72,13 @@ public class ClientService {
         return listResponse;
     }
 
-    public List<Client> findAll() {
-        return clientRepository.findAll();
-    }
-
-    public Optional<ClientResponse> findClientById(Long id) {
-        if (id == null) return Optional.empty();
-
-//        Client client = clientRepository.findById(id).get();
-
+    public ClientResponse findClientById(Long id) {
         Client client = getClientById(id);
 
-        return Optional.of(new ClientResponse(client.getId(),
+        return new ClientResponse(client.getId(),
                 client.getName(),
                 client.getEmail(),
-                client.getCreatedAt())
+                client.getCreatedAt()
         );
     }
 
@@ -93,6 +86,10 @@ public class ClientService {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         return clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException("Cliente com o ID: " + id + " não encontrado"));
+    }
+
+    public List<Client> findAll() {
+        return clientRepository.findAll();
     }
 
     //    So para saber que existe essa forma
@@ -126,25 +123,23 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
-    @Transactional
-    public ClientResponse updatedClientById(Long id, ClientRequest clientDTO) {
-//        ClientResponse clientById = findClientById(id).get();
+//        ClientResponse clientById = findClientById(id);
 //        String encrypted = "";
 //        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
 //            encrypted = passwordEncoder.encode(clientRequest.password());
 //        }
-
+    @Transactional
+    public ClientResponse updatedClientById(Long id, ClientRequest clientDTO) {
         Client client = getClientById(id);
 
         client.setName(clientDTO.name());
         client.setEmail(clientDTO.email());
 
         if (clientDTO.password() != null && !clientDTO.password().isBlank()) {
-            String encrypted = passwordEncoder.encode(clientDTO.password());
-            client.setPassword(encrypted);
+            client.setPassword(passwordEncoder.encode(clientDTO.password()));
         }
 
-        clientRepository.save(client);
+//        clientRepository.save(client);
 
         return new ClientResponse(client.getId(),
                 client.getName(),
