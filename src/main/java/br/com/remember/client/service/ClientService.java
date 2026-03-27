@@ -123,11 +123,6 @@ public class ClientService {
         clientRepository.deleteById(id);
     }
 
-//        ClientResponse clientById = findClientById(id);
-//        String encrypted = "";
-//        if (clientRequest.password() != null && !clientRequest.password().isBlank()) {
-//            encrypted = passwordEncoder.encode(clientRequest.password());
-//        }
     @Transactional
     public ClientResponse updatedClientById(Long id, ClientRequest clientDTO) {
         Client client = getClientById(id);
