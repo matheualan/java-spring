@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -44,7 +43,7 @@ public class ClientService {
     }
 
     @Transactional
-    public List<ClientResponse> saveMultipleClients(List<ClientRequest> listClientsDTO) {
+    public List<ClientResponse> createMultipleClients(List<ClientRequest> listClientsDTO) {
         List<Client> clients = new ArrayList<>();
         List<ClientResponse> listResponse = new ArrayList<>();
 
@@ -72,6 +71,13 @@ public class ClientService {
         return listResponse;
     }
 
+//    Servindo de auxiliar para findClientById e updatedClientById
+    public Client getClientById(Long id) {
+        if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente com o ID: " + id + " não encontrado"));
+    }
+
     public ClientResponse findClientById(Long id) {
         Client client = getClientById(id);
 
@@ -80,35 +86,6 @@ public class ClientService {
                 client.getEmail(),
                 client.getCreatedAt()
         );
-    }
-
-    public Client getClientById(Long id) {
-        if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
-        return clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException("Cliente com o ID: " + id + " não encontrado"));
-    }
-
-    public List<Client> findAll() {
-        return clientRepository.findAll();
-    }
-
-    //    So para saber que existe essa forma
-    public List<ClientRequest> findAllRecords() {
-        return findAll()
-                .stream()
-                .map(p -> new ClientRequest(
-                        p.getName(),
-                        p.getEmail(),
-                        p.getPassword()
-                ))
-                .toList();
-    }
-
-    public List<ClientRequest> findAllDto() {
-        return findAll()
-                .stream()
-                .map(Client::toRequestDTO)
-                .toList();
     }
 
     public List<ClientResponse> listClientResponse() {
@@ -140,6 +117,31 @@ public class ClientService {
                 client.getName(),
                 client.getEmail(),
                 client.getCreatedAt());
+    }
+
+//    METODOS DO CONTROLLER ClientControllerTest
+//    So para saber que existe essas formas
+
+    public List<Client> findAll() {
+        return clientRepository.findAll();
+    }
+
+    public List<ClientRequest> findAllRecords() {
+        return findAll()
+                .stream()
+                .map(p -> new ClientRequest(
+                        p.getName(),
+                        p.getEmail(),
+                        p.getPassword()
+                ))
+                .toList();
+    }
+
+    public List<ClientRequest> findAllDto() {
+        return findAll()
+                .stream()
+                .map(Client::toRequestDTO)
+                .toList();
     }
 
 }
