@@ -15,11 +15,11 @@ import java.util.List;
 @Hidden
 @RestController
 @RequestMapping(path = "/clientTest")
-public class ClientControllerTest {
+public class ClientControllerAux {
 
     private final ClientService clientService;
 
-    public ClientControllerTest(ClientService clientService) {
+    public ClientControllerAux(ClientService clientService) {
         this.clientService = clientService;
     }
 

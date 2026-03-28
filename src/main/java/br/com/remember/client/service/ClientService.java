@@ -119,7 +119,7 @@ public class ClientService {
                 client.getCreatedAt());
     }
 
-//    METODOS DO CONTROLLER ClientControllerTest
+//    METODOS DO CONTROLLER ClientControllerAux
 //    So para saber que existe essas formas
 
     public List<Client> findAll() {
