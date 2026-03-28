@@ -23,6 +23,11 @@ public class RestExceptionHandler {
 //        System.out.println("RestExceptionHandler carregado");
 //    }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneric(Exception ex) {
+        return ResponseEntity.status(500).body("Ops! Uma exceção foi lançada: " + ex.getClass().getName());
+    }
+
     @ExceptionHandler(ClientNotFoundException.class)
     public ResponseEntity<ExceptionDetails> handleClientNotFoundException(
             ClientNotFoundException exception,
@@ -79,11 +84,6 @@ public class RestExceptionHandler {
                         .timestamp(Instant.now())
                         .build()
         );
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneric(Exception ex) {
-        return ResponseEntity.status(500).body("Ops! Uma exceção foi lançada: " + ex.getClass().getName());
     }
 
 }

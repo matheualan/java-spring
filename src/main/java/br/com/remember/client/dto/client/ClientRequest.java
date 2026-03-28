@@ -11,7 +11,7 @@ public record ClientRequest(
         @Email(message = "Email inválido.")
         String email,
 
-        @NotBlank(message = "Senha não pode ser vazia.")
-        @Size(min = 8, max = 72, message = "Senha deve ter entre 8 e 72 caracteres.")
+        @NotBlank(message = "Senha deve ter entre 8 a 72 caracteres.")
+        @Size(min = 8, max = 72, message = "Senha deve ter entre 8 a 72 caracteres.")
         String password) {
 }
