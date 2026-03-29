@@ -1,7 +1,7 @@
 package br.com.remember.client.model;
 
-import br.com.remember.client.dto.client.ClientRequest;
-import br.com.remember.client.dto.client.ClientResponse;
+import br.com.remember.client.dto.ClientRequest;
+import br.com.remember.client.dto.ClientResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;

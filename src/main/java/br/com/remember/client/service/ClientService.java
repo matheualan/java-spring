@@ -1,7 +1,7 @@
 package br.com.remember.client.service;
 
-import br.com.remember.client.dto.client.ClientRequest;
-import br.com.remember.client.dto.client.ClientResponse;
+import br.com.remember.client.dto.ClientRequest;
+import br.com.remember.client.dto.ClientResponse;
 import br.com.remember.client.exceptions.ClientNotFoundException;
 import br.com.remember.client.model.Client;
 import br.com.remember.client.repository.ClientRepository;

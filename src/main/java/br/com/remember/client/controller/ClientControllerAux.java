@@ -1,6 +1,6 @@
 package br.com.remember.client.controller;
 
-import br.com.remember.client.dto.client.ClientRequest;
+import br.com.remember.client.dto.ClientRequest;
 import br.com.remember.client.model.Client;
 import br.com.remember.client.service.ClientService;
 import io.swagger.v3.oas.annotations.Hidden;

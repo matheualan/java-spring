@@ -1,4 +1,4 @@
-package br.com.remember.client.dto.client;
+package br.com.remember.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

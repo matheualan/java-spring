@@ -1,7 +1,7 @@
 package br.com.remember.client.controller;
 
-import br.com.remember.client.dto.client.ClientRequest;
-import br.com.remember.client.dto.client.ClientResponse;
+import br.com.remember.client.dto.ClientRequest;
+import br.com.remember.client.dto.ClientResponse;
 import br.com.remember.client.service.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

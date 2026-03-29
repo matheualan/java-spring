@@ -1,4 +1,4 @@
-package br.com.remember.client.exceptions.handler;
+package br.com.remember.client.exceptions;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
