@@ -2,7 +2,6 @@ package br.com.remember.client.controller;
 
 import br.com.remember.client.dto.ClientRequest;
 import br.com.remember.client.dto.ClientResponse;
-// Ajuste este import se sua exception estiver em outro pacote
 import br.com.remember.client.exceptions.ClientNotFoundException;
 import br.com.remember.client.service.ClientService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +9,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-//import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
-//import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-//import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
@@ -26,15 +21,10 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(
@@ -57,7 +47,7 @@ class ClientControllerIntegrationTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @MockitoBean
+    @MockBean
     private ClientService clientService;
 
     // ===============================
