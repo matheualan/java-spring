@@ -21,11 +21,14 @@
 
     <properties>
         <java.version>21</java.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <lombok.version>1.18.34</lombok.version>
+        <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
     </properties>
 
     <dependencies>
 
-        <!-- WEB (CORRETO) -->
+        <!-- WEB -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -84,11 +87,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- LOMBOK (se você usa) -->
+        <!-- LOMBOK -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+
+        <!-- MAPSTRUCT -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
         </dependency>
 
     </dependencies>
@@ -101,13 +111,35 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- COMPILADOR JAVA 21 -->
+            <!-- COMPILADOR JAVA 21 + PROCESSAMENTO DE ANOTAÇÕES -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <source>21</source>
                     <target>21</target>
+
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok.mapstruct.binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+
+                    <compilerArgs>
+                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -117,268 +149,267 @@
 </project>
 
 
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+        <!--<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+        <!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
+        <!--    <modelVersion>4.0.0</modelVersion>-->
+        <!--    <parent>-->
+        <!--        <groupId>org.springframework.boot</groupId>-->
+        <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--        <version>3.5.11</version>-->
+        <!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+        <!--    </parent>-->
 
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
-<!--         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">-->
-<!--    <modelVersion>4.0.0</modelVersion>-->
-<!--    <parent>-->
-<!--        <groupId>org.springframework.boot</groupId>-->
-<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--        <version>3.5.11</version>-->
-<!--        <relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-<!--    </parent>-->
+        <!--    <groupId>br.com.relembrar</groupId>-->
+        <!--    <artifactId>remember-java-spring</artifactId>-->
+        <!--    <version>0.0.1-SNAPSHOT</version>-->
 
-<!--    <groupId>br.com.relembrar</groupId>-->
-<!--    <artifactId>remember-java-spring</artifactId>-->
-<!--    <version>0.0.1-SNAPSHOT</version>-->
+        <!--    <properties>-->
+        <!--        <java.version>21</java.version>-->
+        <!--    </properties>-->
 
-<!--    <properties>-->
-<!--        <java.version>21</java.version>-->
-<!--    </properties>-->
+        <!--    <dependencies>-->
 
-<!--    <dependencies>-->
+        <!--        &lt;!&ndash; WEB &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-web</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; WEB &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-web</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; VALIDATION &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-validation</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; VALIDATION &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-validation</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; JPA &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; JPA &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-data-jpa</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; SECURITY &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; SECURITY &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; FLYWAY &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.flywaydb</groupId>-->
+        <!--            <artifactId>flyway-core</artifactId>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; FLYWAY &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.flywaydb</groupId>-->
-<!--            <artifactId>flyway-core</artifactId>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; H2 &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.h2database</groupId>-->
+        <!--            <artifactId>h2</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; H2 &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; MARIADB &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.mariadb.jdbc</groupId>-->
+        <!--            <artifactId>mariadb-java-client</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; MARIADB &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.mariadb.jdbc</groupId>-->
-<!--            <artifactId>mariadb-java-client</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; POSTGRES &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.postgresql</groupId>-->
+        <!--            <artifactId>postgresql</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; POSTGRES &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.postgresql</groupId>-->
-<!--            <artifactId>postgresql</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; DEVTOOLS &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; DEVTOOLS &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; OPENAPI &ndash;&gt;-->
+        <!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <groupId>org.springdoc</groupId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>&ndash;&gt;-->
+        <!--&lt;!&ndash;            <version>2.5.0</version>&ndash;&gt;-->
+        <!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--        &lt;!&ndash; OPENAPI &ndash;&gt;-->
-<!--&lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--&lt;!&ndash;            <groupId>org.springdoc</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;            <version>2.5.0</version>&ndash;&gt;-->
-<!--&lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springdoc</groupId>-->
+        <!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
+        <!--            <version>3.0.2</version>-->
+        <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.springdoc</groupId>-->
-<!--            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
-<!--            <version>3.0.2</version>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; LOMBOK &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.projectlombok</groupId>-->
+        <!--            <artifactId>lombok</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; LOMBOK &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        &lt;!&ndash; TEST &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
-<!--        &lt;!&ndash; TEST &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.security</groupId>-->
+        <!--            <artifactId>spring-security-test</artifactId>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
+        <!--    </dependencies>-->
 
-<!--    </dependencies>-->
+        <!--    &lt;!&ndash;    <dependencies>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-validation</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;    <dependencies>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-validation</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-webmvc</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-webmvc</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-devtools</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <optional>true</optional>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-devtools</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <optional>true</optional>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-h2console</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-h2console</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-data-jpa</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-data-jpa</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-data-jpa-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-data-jpa-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>com.h2database</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>h2</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>com.h2database</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>h2</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.mariadb.jdbc</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>mariadb-java-client</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.mariadb.jdbc</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>mariadb-java-client</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.postgresql</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>postgresql</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <version>42.7.10</version>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>compile</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.postgresql</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>postgresql</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <version>42.7.10</version>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>compile</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-flyway</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-flyway</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-flyway-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-flyway-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.flywaydb</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>flyway-mysql</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.flywaydb</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>flyway-mysql</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.flywaydb</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>flyway-database-postgresql</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <version>12.1.1</version>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.flywaydb</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>flyway-database-postgresql</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <version>12.1.1</version>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>runtime</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.projectlombok</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>lombok</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <optional>true</optional>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.projectlombok</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>lombok</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <optional>true</optional>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-validation-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-validation-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-webmvc-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-webmvc-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springdoc</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <version>3.0.2</version>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>compile</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springdoc</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <version>3.0.2</version>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>compile</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-security</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-security</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-boot-starter-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.boot</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-boot-starter-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <groupId>org.springframework.security</groupId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <artifactId>spring-security-test</artifactId>&ndash;&gt;-->
+        <!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+        <!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
+        <!--    &lt;!&ndash;    </dependencies>&ndash;&gt;-->
 
-<!--    &lt;!&ndash;        <dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <groupId>org.springframework.security</groupId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <artifactId>spring-security-test</artifactId>&ndash;&gt;-->
-<!--    &lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </dependency>&ndash;&gt;-->
-<!--    &lt;!&ndash;    </dependencies>&ndash;&gt;-->
+        <!--    <build>-->
+        <!--        <plugins>-->
+        <!--            <plugin>-->
+        <!--                <groupId>org.apache.maven.plugins</groupId>-->
+        <!--                <artifactId>maven-compiler-plugin</artifactId>-->
+        <!--                <configuration>-->
+        <!--                    <annotationProcessorPaths>-->
+        <!--                        <path>-->
+        <!--                            <groupId>org.projectlombok</groupId>-->
+        <!--                            <artifactId>lombok</artifactId>-->
+        <!--                        </path>-->
+        <!--                    </annotationProcessorPaths>-->
+        <!--                </configuration>-->
+        <!--            </plugin>-->
+        <!--            <plugin>-->
+        <!--                <groupId>org.springframework.boot</groupId>-->
+        <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+        <!--                <configuration>-->
+        <!--                    <excludes>-->
+        <!--                        <exclude>-->
+        <!--                            <groupId>org.projectlombok</groupId>-->
+        <!--                            <artifactId>lombok</artifactId>-->
+        <!--                        </exclude>-->
+        <!--                    </excludes>-->
+        <!--                </configuration>-->
+        <!--            </plugin>-->
+        <!--        </plugins>-->
+        <!--    </build>-->
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-compiler-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
-
-<!--</project>-->
+        <!--</project>-->

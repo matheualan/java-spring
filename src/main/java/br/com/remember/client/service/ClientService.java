@@ -75,7 +75,7 @@ public class ClientService {
     public Client getClientById(Long id) {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         return clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException("Cliente com o ID: " + id + " não encontrado"));
+                .orElseThrow(() -> new ClientNotFoundException("Cliente com o ID " + id + " não encontrado"));
     }
 
     public ClientResponse findClientById(Long id) {
