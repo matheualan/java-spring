@@ -3,31 +3,36 @@ package br.com.remember.client.service;
 import br.com.remember.client.dto.ClientRequest;
 import br.com.remember.client.dto.ClientResponse;
 import br.com.remember.client.exceptions.ClientNotFoundException;
+import br.com.remember.client.mapper.ClientMapper;
 import br.com.remember.client.model.Client;
 import br.com.remember.client.repository.ClientRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class ClientService {
 
     private final ClientRepository clientRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ClientMapper clientMapper;
 
-    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
-        this.clientRepository = clientRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+//    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
+//        this.clientRepository = clientRepository;
+//        this.passwordEncoder = passwordEncoder;
+//    }
 
     @Transactional()
     public ClientResponse createClient(ClientRequest clientRequest) {
 //        if (clientRequest.password() == null || clientRequest.password().isBlank()) {
 //            throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
 //        }
+
         Client client = new Client(
                 clientRequest.name(),
                 clientRequest.email(),
@@ -36,10 +41,7 @@ public class ClientService {
 
         Client savedClient = clientRepository.save(client);
 
-        return new ClientResponse(savedClient.getId(),
-                savedClient.getName(),
-                savedClient.getEmail(),
-                savedClient.getCreatedAt());
+        return clientMapper.toResponse(savedClient);
     }
 
     @Transactional
@@ -61,11 +63,7 @@ public class ClientService {
         clientRepository.saveAll(clients);
 
         for (Client client : clients) {
-            listResponse.add(new ClientResponse(client.getId(),
-                    client.getName(),
-                    client.getEmail(),
-                    client.getCreatedAt())
-            );
+            listResponse.add(clientMapper.toResponse(client));
         }
 
         return listResponse;
@@ -80,18 +78,14 @@ public class ClientService {
 
     public ClientResponse findClientById(Long id) {
         Client client = getClientById(id);
-
-        return new ClientResponse(client.getId(),
-                client.getName(),
-                client.getEmail(),
-                client.getCreatedAt()
-        );
+        return clientMapper.toResponse(client);
     }
 
     public List<ClientResponse> listClientResponse() {
         return clientRepository.findAll()
                 .stream()
-                .map(Client::toResponseDTO)
+//                .map(Client::toResponseDTO)
+                .map(clientMapper::toResponse)
                 .toList();
     }
 
