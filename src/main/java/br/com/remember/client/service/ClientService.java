@@ -107,10 +107,12 @@ public class ClientService {
 
 //        clientRepository.save(client);
 
-        return new ClientResponse(client.getId(),
-                client.getName(),
-                client.getEmail(),
-                client.getCreatedAt());
+//        return new ClientResponse(client.getId(),
+//                client.getName(),
+//                client.getEmail(),
+//                client.getCreatedAt());
+
+        return clientMapper.toResponse(client);
     }
 
 //    METODOS DO CONTROLLER ClientControllerAux
