@@ -84,7 +84,6 @@ public class ClientService {
     public List<ClientResponse> listClientResponse() {
         return clientRepository.findAll()
                 .stream()
-//                .map(Client::toResponseDTO)
                 .map(clientMapper::toResponse)
                 .toList();
     }
