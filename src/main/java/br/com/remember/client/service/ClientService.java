@@ -49,6 +49,10 @@ public class ClientService {
                 throw new IllegalArgumentException("Senha é obrigatória para criar um cliente.");
             }
 
+            if (clientDto.name() == null || clientDto.name().isBlank()) {
+                throw new IllegalArgumentException("Nome é obrigatório para criar um cliente.");
+            }
+
             clients.add(new Client(
                     clientDto.name(),
                     clientDto.email(),
