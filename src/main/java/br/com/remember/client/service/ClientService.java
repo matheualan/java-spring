@@ -22,11 +22,6 @@ public class ClientService {
     private final PasswordEncoder passwordEncoder;
     private final ClientMapper clientMapper;
 
-//    public ClientService(ClientRepository clientRepository, PasswordEncoder passwordEncoder) {
-//        this.clientRepository = clientRepository;
-//        this.passwordEncoder = passwordEncoder;
-//    }
-
     @Transactional()
     public ClientResponse createClient(ClientRequest clientRequest) {
 //        if (clientRequest.password() == null || clientRequest.password().isBlank()) {
@@ -103,13 +98,6 @@ public class ClientService {
         if (clientDTO.password() != null && !clientDTO.password().isBlank()) {
             client.setPassword(passwordEncoder.encode(clientDTO.password()));
         }
-
-//        clientRepository.save(client);
-
-//        return new ClientResponse(client.getId(),
-//                client.getName(),
-//                client.getEmail(),
-//                client.getCreatedAt());
 
         return clientMapper.toResponse(client);
     }
