@@ -50,9 +50,7 @@ class ClientControllerIntegrationTest {
     @MockBean
     private ClientService clientService;
 
-    // ===============================
-    // CREATE
-    // ===============================
+    // Testes para CREATE
 
     @Test
     @DisplayName("POST /clients/ -> 201 Created")
@@ -141,9 +139,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 
-    // ===============================
-    // FIND BY ID
-    // ===============================
+    // Testes para FIND BY ID
 
     @Test
     @DisplayName("GET /clients/byId -> 200 OK")
@@ -195,9 +191,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$.timestamp").exists());
     }
 
-    // ===============================
-    // LIST
-    // ===============================
+    // Testes para LIST
 
     @Test
     @DisplayName("GET /clients/ -> 200 OK with 2 items")
@@ -228,9 +222,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(0)));
     }
 
-    // ===============================
-    // DELETE
-    // ===============================
+    // Testes para DELETE
 
     @Test
     @DisplayName("DELETE /clients/ -> 204 No Content")
@@ -270,9 +262,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$.path").value("/clients/"));
     }
 
-    // ===============================
-    // UPDATE
-    // ===============================
+    // Testes para UPDATE
 
     @Test
     @DisplayName("PUT /clients/ -> 200 OK")
@@ -375,9 +365,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(content().string(containsString("java.lang.RuntimeException")));
     }
 
-    // ===============================
-    // HELPERS
-    // ===============================
+    // Testes para HELPERS
 
     private ClientRequest newValidRequest() {
         return new ClientRequest(
