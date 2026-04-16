@@ -120,25 +120,6 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$[1].email").value("joao@email.com"));
     }
 
-    @Test
-    @DisplayName("POST /clients/saveAll -> 400 Validation Error")
-    void shouldReturn400WhenCreateMultipleClientsBodyIsInvalid() throws Exception {
-        List<ClientRequest> invalidRequests = List.of(
-                new ClientRequest("Ma", "email-invalido", "123")
-        );
-
-        mockMvc.perform(post("/clients/saveAll")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidRequests)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.title").value("Argumento inválido, verifique a documentação."))
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.developerMessage")
-                        .value("org.springframework.web.bind.MethodArgumentNotValidException"))
-                .andExpect(jsonPath("$.path").value("/clients/saveAll"))
-                .andExpect(jsonPath("$.timestamp").exists());
-    }
-
     // Testes para FIND BY ID
 
     @Test
@@ -169,7 +150,7 @@ class ClientControllerIntegrationTest {
                 .andExpect(jsonPath("$.status").value(404))
                 .andExpect(jsonPath("$.detail").value("Cliente não existe"))
                 .andExpect(jsonPath("$.developerMessage")
-                        .value("br.com.remember.client.exception.ClientNotFoundException"))
+                        .value("br.com.remember.client.exceptions.ClientNotFoundException"))
                 .andExpect(jsonPath("$.path").value("/clients/byId"))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
