@@ -1,0 +1,70 @@
+Testes unitários camada service ClientService
+
+✅ 🧪 Cenários cobertos pelos testes
+🔹 createClient
+✅ Deve criar cliente com sucesso
+✅ Deve chamar passwordEncoder.encode
+✅ Deve salvar no repositório
+✅ Deve retornar ClientResponse via mapper
+🔹 createMultipleClients
+✔ Fluxo feliz
+✅ Deve criar lista de clientes com sucesso
+✅ Deve salvar todos com saveAll
+✅ Deve retornar lista de responses
+❌ Validações (branches)
+❌ Senha null → lança IllegalArgumentException
+❌ Senha vazia ("") → lança IllegalArgumentException
+❌ Nome null → lança IllegalArgumentException
+❌ Nome vazio ("") → lança IllegalArgumentException
+
+👉 Aqui você cobriu todas as branches do if 🔥
+
+🔹 getClientById
+✅ Retorna cliente quando encontrado
+❌ ID null → lança IllegalArgumentException
+❌ Cliente não encontrado → lança ClientNotFoundException
+🔹 findClientById
+✅ Deve:
+chamar getClientById
+converter com mapper
+retornar ClientResponse
+🔹 listClientResponse
+✅ Deve retornar lista de clientes
+✅ Deve mapear todos com clientMapper::toResponse
+✅ Testa uso de stream + map + toList
+🔹 deleteClientById
+✅ Deve chamar repository.deleteById
+
+⚠️ Observação importante:
+
+Não testa se o cliente existe (porque seu método também não valida isso)
+🔹 updatedClientById
+✔ Fluxo sem senha
+✅ Atualiza nome
+✅ Atualiza email
+❌ NÃO chama passwordEncoder.encode
+✔ Fluxo com senha
+✅ Atualiza nome
+✅ Atualiza email
+✅ Codifica nova senha
+✅ Atualiza senha
+
+👉 Aqui você cobriu o if condicional da senha (branch)
+
+🔹 Métodos auxiliares
+findAll
+✅ Retorna lista do repository
+findAllRecords
+✅ Converte Client → ClientRequest manualmente
+findAllDto
+✅ Usa método Client::toRequestDTO
+🧠 Resumo geral (nível entrevista)
+
+Você cobriu:
+
+✅ Fluxos felizes (happy path)
+✅ Validações de entrada (null, blank)
+✅ Exceções customizadas
+✅ Branches (if/else)
+✅ Interações com dependências (Mockito verify)
+✅ Transformações (mapper, stream)

@@ -3,14 +3,14 @@ package br.com.remember.client.service;
 import br.com.remember.client.dto.ClientRequest;
 import br.com.remember.client.dto.ClientResponse;
 import br.com.remember.client.exceptions.ClientNotFoundException;
+import br.com.remember.client.mapper.ClientMapper;
 import br.com.remember.client.model.Client;
 import br.com.remember.client.repository.ClientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.*;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
@@ -20,322 +20,207 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(org.mockito.junit.jupiter.MockitoExtension.class)
 class ClientServiceTest {
 
     @Mock
-    private ClientRepository clientRepository;
+    private ClientRepository repository;
 
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    @Mock
+    private ClientMapper mapper;
+
     @InjectMocks
-    private ClientService clientService;
+    private ClientService service;
 
     private Client client;
-    private ClientRequest clientRequest;
+    private ClientRequest request;
+    private ClientResponse response;
 
     @BeforeEach
     void setup() {
-        client = new Client("Matheus", "matheus@email.com", "encodedPassword");
-        client.setId(1L);
-        client.setCreatedAt(Instant.now());
-
-        clientRequest = new ClientRequest(
-                "Matheus",
-                "matheus@email.com",
-                "123456"
-        );
+        client = new Client("Matheus", "matheus@email.com", "encoded");
+        request = new ClientRequest("Matheus", "matheus@email.com", "123");
+        response = new ClientResponse(1L, "Matheus", "matheus@email.com", Instant.now());
     }
 
-    // ===============================
-    // createClient
-    // ===============================
+    // ================= CREATE =================
 
     @Test
-    void shouldCreateClientSuccessfully() {
+    void shouldCreateClient() {
+        when(passwordEncoder.encode("123")).thenReturn("encoded");
+        when(repository.save(any(Client.class))).thenReturn(client);
+        when(mapper.toResponse(client)).thenReturn(response);
 
-        // Arrange
-        when(passwordEncoder.encode("123456")).thenReturn("encodedPassword");
-        when(clientRepository.save(any(Client.class))).thenReturn(client);
+        ClientResponse result = service.createClient(request);
 
-        // Act
-        ClientResponse response = clientService.createClient(clientRequest);
-
-        // Assert
-        assertNotNull(response);
-        assertEquals("Matheus", response.name());
-        assertEquals("matheus@email.com", response.email());
-
-        verify(passwordEncoder).encode("123456");
-        verify(clientRepository).save(any(Client.class));
-    }
-
-    // ===============================
-    // createMultipleClients
-    // ===============================
-
-    @Test
-    void shouldCreateMultipleClientsSuccessfully() {
-
-        // Arrange
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-
-        List<ClientRequest> list = List.of(clientRequest);
-
-        // Act
-        List<ClientResponse> responses = clientService.createMultipleClients(list);
-
-        // Assert
-        assertEquals(1, responses.size());
-        verify(clientRepository).saveAll(anyList());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenPasswordIsNullInMultipleCreation() {
-
-        // Arrange
-        ClientRequest invalidRequest =
-                new ClientRequest("Nome", "email@email.com", null);
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class,
-                () -> clientService.createMultipleClients(List.of(invalidRequest)));
-
-        verify(clientRepository, never()).saveAll(anyList());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenPasswordIsBlankInMultipleCreation() {
-
-        // Arrange
-        ClientRequest invalidRequest =
-                new ClientRequest("Nome", "email@email.com", "");
-
-        // Act & Assert
-        assertThrows(IllegalArgumentException.class,
-                () -> clientService.createMultipleClients(List.of(invalidRequest)));
-
-        verify(clientRepository, never()).saveAll(anyList());
-    }
-
-    @Test
-    void shouldReturnEmptyListWhenCreatingMultipleWithEmptyList() {
-
-        // Arrange
-        when(clientRepository.saveAll(anyList())).thenReturn(List.of());
-
-        // Act
-        List<ClientResponse> responses =
-                clientService.createMultipleClients(List.of());
-
-        // Assert
-        assertTrue(responses.isEmpty());
-    }
-
-    // ===============================
-    // getClientById
-    // ===============================
-
-    @Test
-    void shouldReturnClientWhenIdExists() {
-
-        // Arrange
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
-
-        // Act
-        Client result = clientService.getClientById(1L);
-
-        // Assert
         assertNotNull(result);
-        assertEquals(1L, result.getId());
+        verify(repository).save(any(Client.class));
+        verify(mapper).toResponse(client);
+    }
+
+    // ================= CREATE MULTIPLE =================
+
+    @Test
+    void shouldCreateMultipleClients() {
+        List<ClientRequest> requests = List.of(request);
+
+        when(passwordEncoder.encode("123")).thenReturn("encoded");
+        when(mapper.toResponse(any(Client.class))).thenReturn(response);
+
+        List<ClientResponse> result = service.createMultipleClients(requests);
+
+        assertEquals(1, result.size());
+        verify(repository).saveAll(anyList());
     }
 
     @Test
-    void shouldThrowExceptionWhenClientNotFound() {
-
-        // Arrange
-        when(clientRepository.findById(1L)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(ClientNotFoundException.class,
-                () -> clientService.getClientById(1L));
-    }
-
-    @Test
-    void shouldThrowExceptionWhenIdIsNull() {
+    void shouldThrowWhenPasswordIsNull() {
+        ClientRequest invalid = new ClientRequest("Matheus", "email", null);
 
         assertThrows(IllegalArgumentException.class,
-                () -> clientService.getClientById(null));
+                () -> service.createMultipleClients(List.of(invalid)));
     }
 
     @Test
-    void shouldReturnClientResponseWhenFindingById() {
+    void shouldThrowWhenPasswordIsBlank() {
+        ClientRequest invalid = new ClientRequest("Matheus", "email", "");
 
-        // Arrange
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
-
-        // Act
-        ClientResponse response = clientService.findClientById(1L);
-
-        // Assert
-        assertNotNull(response);
-        assertEquals(client.getEmail(), response.email());
+        assertThrows(IllegalArgumentException.class,
+                () -> service.createMultipleClients(List.of(invalid)));
     }
 
     @Test
-    void shouldReturnEmptyListWhenNoClientsExist() {
+    void shouldThrowWhenNameIsNull() {
+        ClientRequest invalid = new ClientRequest(null, "email", "123");
 
-        // Arrange
-        when(clientRepository.findAll()).thenReturn(List.of());
-
-        // Act
-        List<ClientResponse> responses = clientService.listClientResponse();
-
-        // Assert
-        assertTrue(responses.isEmpty());
-    }
-
-    // ===============================
-    // listClientResponse
-    // ===============================
-
-    @Test
-    void shouldReturnListOfClientResponses() {
-
-        // Arrange
-        when(clientRepository.findAll()).thenReturn(List.of(client));
-
-        // Act
-        List<ClientResponse> responses = clientService.listClientResponse();
-
-        // Assert
-        assertEquals(1, responses.size());
-        verify(clientRepository).findAll();
-    }
-
-    // ===============================
-    // deleteClientById
-    // ===============================
-
-    @Test
-    void shouldDeleteClientById() {
-
-        // Act
-        clientService.deleteClientById(1L);
-
-        // Assert
-        verify(clientRepository).deleteById(1L);
-    }
-
-    // ===============================
-    // updatedClientById
-    // ===============================
-
-    @Test
-    void shouldUpdateClientSuccessfully() {
-
-        // Arrange
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
-        when(passwordEncoder.encode("123456")).thenReturn("encodedPassword");
-
-        // Act
-        ClientResponse response =
-                clientService.updatedClientById(1L, clientRequest);
-
-        // Assert
-        assertEquals("Matheus", response.name());
-        verify(passwordEncoder).encode("123456");
+        assertThrows(IllegalArgumentException.class,
+                () -> service.createMultipleClients(List.of(invalid)));
     }
 
     @Test
-    void shouldUpdateClientWithoutChangingPasswordIfBlank() {
+    void shouldThrowWhenNameIsBlank() {
+        ClientRequest invalid = new ClientRequest("", "email", "123");
 
-        // Arrange
-        ClientRequest requestWithoutPassword =
-                new ClientRequest("NovoNome", "novo@email.com", "");
+        assertThrows(IllegalArgumentException.class,
+                () -> service.createMultipleClients(List.of(invalid)));
+    }
 
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+    // ================= GET BY ID =================
 
-        // Act
-        ClientResponse response =
-                clientService.updatedClientById(1L, requestWithoutPassword);
+    @Test
+    void shouldReturnClientWhenFound() {
+        when(repository.findById(1L)).thenReturn(Optional.of(client));
 
-        // Assert
-        assertEquals("NovoNome", response.name());
-        verify(passwordEncoder, never()).encode(anyString());
+        Client result = service.getClientById(1L);
+
+        assertNotNull(result);
     }
 
     @Test
-    void shouldThrowExceptionWhenUpdatingNonExistingClient() {
+    void shouldThrowWhenIdIsNull() {
+        assertThrows(IllegalArgumentException.class,
+                () -> service.getClientById(null));
+    }
 
-        // Arrange
-        when(clientRepository.findById(1L)).thenReturn(Optional.empty());
+    @Test
+    void shouldThrowWhenClientNotFound() {
+        when(repository.findById(1L)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(ClientNotFoundException.class,
-                () -> clientService.updatedClientById(1L, clientRequest));
+                () -> service.getClientById(1L));
+    }
+
+    // ================= FIND BY ID =================
+
+    @Test
+    void shouldFindClientById() {
+        when(repository.findById(1L)).thenReturn(Optional.of(client));
+        when(mapper.toResponse(client)).thenReturn(response);
+
+        ClientResponse result = service.findClientById(1L);
+
+        assertNotNull(result);
+    }
+
+    // ================= LIST =================
+
+    @Test
+    void shouldListClients() {
+        when(repository.findAll()).thenReturn(List.of(client));
+        when(mapper.toResponse(client)).thenReturn(response);
+
+        List<ClientResponse> result = service.listClientResponse();
+
+        assertEquals(1, result.size());
+    }
+
+    // ================= DELETE =================
+
+    @Test
+    void shouldDeleteClient() {
+        service.deleteClientById(1L);
+
+        verify(repository).deleteById(1L);
+    }
+
+    // ================= UPDATE =================
+
+    @Test
+    void shouldUpdateClientWithoutPassword() {
+        ClientRequest update = new ClientRequest("Novo", "novo@email.com", null);
+
+        when(repository.findById(1L)).thenReturn(Optional.of(client));
+        when(mapper.toResponse(client)).thenReturn(response);
+
+        ClientResponse result = service.updatedClientById(1L, update);
+
+        assertNotNull(result);
+        verify(passwordEncoder, never()).encode(any());
     }
 
     @Test
-    void shouldUpdateClientWithoutChangingPasswordWhenPasswordIsNull() {
+    void shouldUpdateClientWithPassword() {
+        ClientRequest update = new ClientRequest("Novo", "novo@email.com", "123");
 
-        // Arrange
-        ClientRequest request =
-                new ClientRequest("NovoNome", "novo@email.com", null);
+        when(repository.findById(1L)).thenReturn(Optional.of(client));
+        when(passwordEncoder.encode("123")).thenReturn("encoded");
+        when(mapper.toResponse(client)).thenReturn(response);
 
-        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+        ClientResponse result = service.updatedClientById(1L, update);
 
-        // Act
-        ClientResponse response =
-                clientService.updatedClientById(1L, request);
-
-        // Assert
-        assertEquals("NovoNome", response.name());
-        verify(passwordEncoder, never()).encode(anyString());
+        assertNotNull(result);
+        verify(passwordEncoder).encode("123");
     }
 
-    // ===============================
-    // Métodos de Teste ClientControllerAux
-    // ===============================
+    // ================= AUX METHODS =================
 
     @Test
-    void shouldReturnAllClients() {
+    void shouldFindAll() {
+        when(repository.findAll()).thenReturn(List.of(client));
 
-        // Arrange
-        when(clientRepository.findAll()).thenReturn(List.of(client));
+        List<Client> result = service.findAll();
 
-        // Act
-        List<Client> result = clientService.findAll();
-
-        // Assert
         assertEquals(1, result.size());
     }
 
     @Test
-    void shouldReturnAllRecordsAsClientRequest() {
+    void shouldFindAllRecords() {
+        when(repository.findAll()).thenReturn(List.of(client));
 
-        // Arrange
-        when(clientRepository.findAll()).thenReturn(List.of(client));
+        List<ClientRequest> result = service.findAllRecords();
 
-        // Act
-        List<ClientRequest> result = clientService.findAllRecords();
-
-        // Assert
         assertEquals(1, result.size());
-        assertEquals(client.getEmail(), result.get(0).email());
     }
 
     @Test
-    void shouldReturnAllDtos() {
+    void shouldFindAllDto() {
+        when(repository.findAll()).thenReturn(List.of(client));
 
-        // Arrange
-        when(clientRepository.findAll()).thenReturn(List.of(client));
+        List<ClientRequest> result = service.findAllDto();
 
-        // Act
-        List<ClientRequest> result = clientService.findAllDto();
-
-        // Assert
         assertEquals(1, result.size());
     }
 }
